@@ -1,0 +1,161 @@
+/* src/styles/Search.module.css */
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.searchBox {
+  position: relative;
+  width: 600px;
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #065f46;
+  background-color: #f0fdf4;
+  z-index: 10;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease-in-out;
+}
+
+.searchBox > form,
+.searchBox > form > input {
+  width: 100%;
+}
+
+/* src/styles/Search.module.css */
+.logo {
+  transition: top 3s ease, opacity 2s ease;
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 40px);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.logoStart {
+  top: calc(50% - 40px);
+}
+
+.logoEnd {
+  top: calc(50% - 87px);
+}
+
+.searchBox:focus-within {
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.4);
+}
+
+.searchInput {
+  flex-grow: 1;
+  border: none;
+  background-color: transparent;
+  padding: 8px;
+  font-size: 1rem;
+  color: #065f46;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #a1a1aa;
+}
+
+.searchButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.searchButton:focus .searchIcon,
+.searchButton:hover .searchIcon {
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.4);
+  border-radius: 50%;
+}
+
+.searchIcon {
+  fill: #10b981;
+}
+
+.autocompleteResults {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.autocompleteItem {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocompleteItem:hover {
+  background-color: #f0f0f0;
+}
+
+.searchInput.disabled,
+.searchButton:disabled {
+  background-color: #f3f3f3;
+  color: #aaa;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+
+.fadeIn {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 5s ease, visibility 0s ease;
+}
+
+.searchBoxPositioned {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: auto;
+  opacity: 0;
+  transition: opacity 5s ease;
+}
+
+/* For Next/Image conflict */
+
+.logo img,
+.searchIcon img {
+  width: auto;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 650px) {
+  .searchBox {
+    width: 300px;
+    padding: 8px 24px 8px 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchBox {
+    width: 100%;
+    padding: 4px 20px 4px 4px;
+    font-size: 0.8rem;
+  }
+}

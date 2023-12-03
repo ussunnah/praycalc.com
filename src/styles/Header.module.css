@@ -1,0 +1,26 @@
+/* src/styles/Header.module.css */
+@keyframes colorShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .header {
+    position: relative;
+    background-image: linear-gradient(to right, #f0fdf4 0%, #0c3011 50%, #024534 100%);
+    background-size: 200% 100%;
+    animation: colorShift 3s ease-in-out forwards;
+  }
+  
+  .header {
+    min-height: 4rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    overflow: hidden;
+  }
