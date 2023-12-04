@@ -4,13 +4,12 @@ import { DateTime } from 'luxon';
 import { CityTimesProps, PrayerTimes } from '../types/city';
 import { getActivePrayer } from '../utils/getActivePrayer';
 
+const mainPrayers = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 const CityTimes: React.FC<CityTimesProps> = ({ prayerTimes, currentTime }) => {
-  const mainPrayers = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
   const activePrayer = useMemo(() => {
     const active = getActivePrayer(prayerTimes, currentTime, mainPrayers);
     return active;
-  }, [prayerTimes, currentTime, mainPrayers]);
+  }, [prayerTimes, currentTime]);
 
   const formatTime = (time: string | undefined, seconds = true) => {
     return typeof time === 'string' ? DateTime.fromISO(time).toFormat(seconds ? 'HH:mm:ss' : 'HH:mm') : '';

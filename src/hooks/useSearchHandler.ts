@@ -3,80 +3,82 @@ import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAutocomplete } from './useAutocomplete';
 import { useSearchResult } from '../context/SearchResultContext';
-import { useSearchFormat } from './useSearchFormat';
+import { getSearchPath } from '../utils/getSearchPath';  // Importing the utility function
+import { SearchResult } from '../types/search';
 
 export const useSearchHandler = () => {
+  const router = useRouter();
   const [isSearching, setIsSearching] = useState(false);
   const [initialGeoSearchDone, setInitialGeoSearchDone] = useState(false);
-  const router = useRouter();
-  const { setSearchResult, setOriginalSearchInput } = useSearchResult(); // Now using setOriginalSearchInput
-  const {
-    inputValue,
-    setInputValue,
-    autocompleteResults,
-    searchError,
-    setSearchError,
-  } = useAutocomplete();
+  const [searchResult, setSearchResultState] = useState<SearchResult | null>(null);
+  const { setSearchResult, setOriginalSearchInput } = useSearchResult();
+  const { inputValue, setInputValue, autocompleteResults, searchError, setSearchError } = useAutocomplete();
 
   // Handle form submission for search
   const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement> | Event, isGeoSearch = false) => {
     event.preventDefault();
     setIsSearching(true);
     let searchQuery = inputValue.trim();
-    if (searchQuery.length === 0) return
+    if (searchQuery.length === 0) {
+      setIsSearching(false);
+      return;
+    }
 
-    // Check if input is coordinates pattern
     const coordinatesPattern = /^-?\d{1,3}\.\d+,\s*-?\d{1,3}\.\d+$/;
     const isCoordinateSearch = coordinatesPattern.test(searchQuery);
 
-    // Storing the original input before modifying the search query
     if (isCoordinateSearch || isGeoSearch) {
       setOriginalSearchInput(searchQuery);
-      // If it's a coordinate search or geolocation, adjust the search query
       searchQuery = searchQuery.split(',').map(coord => coord.trim()).join('/');
     } else {
-      setOriginalSearchInput(null); // Clear the original input if it's not a coordinate search
+      setOriginalSearchInput(null);
     }
 
     const endpoint = isCoordinateSearch || isGeoSearch
-      ? `/api/geo/${searchQuery}` // Use endpoint for coordinates
-      : `/api/geo/${encodeURIComponent(searchQuery)}`; // Use endpoint for string search
+      ? `/api/geo/${searchQuery}`
+      : `/api/geo/${encodeURIComponent(searchQuery)}`;
 
     try {
       const response = await fetch(endpoint);
       if (!response.ok) {
         setSearchError('No results, please search again.');
         setIsSearching(false);
-        setInputValue(''); // Clear the input field if there are no results
+        setInputValue('');
       } else {
         setSearchError('');
         const result = await response.json();
-        setSearchResult(result); // Store the result in context
-        const path = useSearchFormat(result);
-        router.push(path);
+        setSearchResult(result);
+        setSearchResultState(result);
       }
     } catch (error) {
-      console.error('Search error:', error);
       setSearchError('An error occurred. Please try again.');
       setIsSearching(false);
     }
-  }, [inputValue, setSearchError, router, setSearchResult, setOriginalSearchInput, useSearchFormat]);
+  }, [inputValue, setSearchError, setSearchResult, setOriginalSearchInput, setInputValue]);
+
+  // Effect to handle search result change and navigate
+  useEffect(() => {
+    if (searchResult) {
+      const path = getSearchPath(searchResult);  // Use the utility function
+      router.push(path);
+    }
+  }, [searchResult, router]);
 
   // Function to handle geolocation success
   const handleGeoSuccess = useCallback((position: GeolocationPosition) => {
-    if (initialGeoSearchDone) return; // Prevent multiple geolocation searches
+    if (initialGeoSearchDone) return;
     const { latitude, longitude } = position.coords;
     const geoString = `${latitude},${longitude}`;
-    setOriginalSearchInput(geoString); // Store the geolocation as the original search input
-    setSearchResult({ latitude, longitude }); // Store geolocation in context
+    setOriginalSearchInput(geoString);
+    setSearchResult({ latitude, longitude });
     setInputValue(geoString);
-    handleSubmit(new Event('submit'), true); // Auto-submit with geolocation
+    handleSubmit(new Event('submit'), true);
     setInitialGeoSearchDone(true);
   }, [setInputValue, handleSubmit, setSearchResult, setOriginalSearchInput, initialGeoSearchDone]);
 
   // Function to handle geolocation error
   const handleGeoError = useCallback((error: GeolocationPositionError) => {
-    console.error('Geolocation error:', error); // Uncommented to log errors
+    console.error('Geolocation error:', error);
   }, []);
 
   // Effect to request geolocation on component mount

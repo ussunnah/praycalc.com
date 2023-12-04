@@ -68,7 +68,7 @@ const CityPage: React.FC = () => {
         console.error('Validation failed with error:', error);
         router.replace('/');
       });
-  }, [router, setCityData, setSearchResult, searchResult]);
+  }, [router, setCityData, setSearchResult, searchResult, originalSearchInput]);
 
   return (
     <div className="pt-20">

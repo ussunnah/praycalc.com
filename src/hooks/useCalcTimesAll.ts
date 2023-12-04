@@ -37,7 +37,7 @@ const useCalcTimesAll = (cityData: any, weatherData: WeatherApiData | undefined,
 
     const calculatedTimes = calcTimesAll(currentDate, lat, lng, tz, elevation, temp, pressure);
     setPrayerTimes(calculatedTimes as unknown as PrayerTimes);
-  }, [cityData, weatherData, currentDate]);
+  }, [cityData, weatherData, currentDate, prayerTimes]);
 
   return prayerTimes;
 };

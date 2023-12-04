@@ -1,3 +1,4 @@
+// src/types/weather.ts
 export interface WeatherApiData {
     cod: string;
     message: number;

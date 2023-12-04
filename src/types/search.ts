@@ -3,6 +3,11 @@ export interface AutocompleteResult {
     city_name: string;
   }
   
+  export interface SearchResult {
+    i?: string;
+    n: string;
+  }
+
   export interface SearchResultType {
     i?: string; // ID (Airport IATA code or Zipcode)
     n: string;  // Name

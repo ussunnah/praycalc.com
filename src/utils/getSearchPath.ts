@@ -1,10 +1,7 @@
-// src/hooks/useSearchFormat.ts
-interface SearchResult {
-  i?: string;
-  n: string;
-}
+// src/utils/getSearchPath.ts
+import { SearchResult } from '../types/search';
 
-export const useSearchFormat = (result: SearchResult): string => {
+export const getSearchPath = (result: SearchResult): string => {
   const formatSegment = (segment: string) => {
     // Remove leading and trailing hyphens and spaces, replace spaces with hyphens
     return segment.replace(/^-+|-+$|^\s+|\s+$/g, '').replace(/\s+/g, '-').toLowerCase();

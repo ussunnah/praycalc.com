@@ -1,5 +1,6 @@
 // src/components/City.tsx
 import React from 'react';
+import Image from 'next/image';
 import { useCity } from '../context/CityContext';
 import useCurrentTime from '../hooks/useCurrentTime';
 import useCalcTimesAll from '../hooks/useCalcTimesAll';
@@ -12,7 +13,9 @@ import CityTimes from './CityTimes';
 
 const City: React.FC = () => {
   const { cityData } = useCity();
-  const currentTime = useCurrentTime();
+  const timezone = cityData?.t ?? null; // Get timezone from cityData
+  const currentTime = useCurrentTime(timezone);
+
 
   const lat = cityData?.y?.toString() ?? '0';
   const lng = cityData?.x?.toString() ?? '0';
@@ -24,7 +27,7 @@ const City: React.FC = () => {
   if (isWeatherLoading || !weather || !prayerTimes) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <img src="/loading.gif" alt="Loading" />
+        <Image src="/loading.gif" alt="Loading" width={128} height={128} />
       </div>
     );
   }
@@ -33,7 +36,7 @@ const City: React.FC = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <p>
-          <img src="/error.webp" alt="Error" />
+          <Image src="/error.webp" alt="Error" width={64} height={64} />
           Unable to connect to server. Please try again later.
         </p>
       </div>
