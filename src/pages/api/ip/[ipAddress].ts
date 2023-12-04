@@ -1,4 +1,8 @@
 // src/pages/api/ip/[ipAddress].ts
+
+/**
+ * Disabled because of Vercel limits
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
 import fs from 'fs';
@@ -58,3 +62,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(200).json(geoData);
 }
+ */
