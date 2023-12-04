@@ -37,6 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     cache[cacheKey] = { data, timestamp: Date.now() };
     return res.status(200).json(data);
   } catch (error) {
+    console.log(`URL = https://api.openweathermap.org/data/2.5/forecast?lat=${truncatedLat}&lon=${truncatedLng}&appid=${apiKey}&units=metric`);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
