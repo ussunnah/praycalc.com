@@ -18,7 +18,7 @@ const useWeather = (lat: string, lng: string, currentTime: DateTime): { weather:
       try {
         const truncatedLat = parseFloat(lat).toFixed(2);
         const truncatedLng = parseFloat(lng).toFixed(2);
-        const response = await fetch(`/api/omw/${truncatedLat}/${truncatedLng}`);
+        const response = await fetch(`/api/owm/${truncatedLat}/${truncatedLng}`);
         
         if (!response.ok) {
           throw new Error(`Weather data fetch failed: ${response.statusText}`);
