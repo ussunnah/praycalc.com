@@ -12,7 +12,7 @@ interface SearchInputProps {
 }
 
 // The forwardRef allows the parent component to get a reference to the underlying input element.
-const SearchInput: React.FC<SearchInputProps & { ref: React.Ref<HTMLInputElement> }> = forwardRef(
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ value, onChange, onSubmit, placeholder, disabled }, ref) => {
     return (
       <form onSubmit={onSubmit} className={styles.searchForm}>
